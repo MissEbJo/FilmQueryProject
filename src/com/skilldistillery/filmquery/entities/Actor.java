@@ -12,7 +12,10 @@ public class Actor {
 	public Actor() {
 
 	}
-	
+	public Actor(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 	public Actor(int id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
@@ -71,7 +74,7 @@ public class Actor {
 
 	@Override
 	public String toString() {
-		return "Actor id, first name, last name: \n" + id + " " + firstName + " "+  lastName ;
+		return firstName + " " + lastName;
 	}
 
 }

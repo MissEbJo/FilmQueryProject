@@ -32,21 +32,27 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		try {
 			Connection conn = DriverManager.getConnection(URL, USER, PASS);
-			String sql = "";
+			String sql = "SELECT DISTINCT film.id, film.title"
+					+ " FROM film JOIN film_actor ON film.id = film_actor.film_id WHERE film_id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
+//			System.out.println(stmt);
 			stmt.setInt(1, filmId);
 			ResultSet filmResult = stmt.executeQuery();
 			if (filmResult.next()) {
+				film = new Film();
+				film.setId(filmResult.getInt("film.id"));
+				film.setTitle(filmResult.getString("film.title"));
+				film.setActors(findActorsByFilmId(filmId));
 
 			}
 			filmResult.close();
 			stmt.close();
 			conn.close();
-			return film;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return film;
 	}
 
 	@Override
@@ -54,16 +60,16 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Actor actor = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, USER, PASS);
-			String sql = "SELECT id, first_name, last_name FROM actor WHERE id = ?";
+			String sql = "SELECT id, first_name, last_name FROM actor WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, actorId);
 			ResultSet actorResult = stmt.executeQuery();
 			if (actorResult.next()) {
 				actor = new Actor(); // Create the object
 				// Here is our mapping of query columns to our object fields:
-				actor.setId(actorResult.getInt(1));
-				actor.setFirstName(actorResult.getString(2));
-				actor.setLastName(actorResult.getString(3));
+				actor.setId(actorResult.getInt("id"));
+				actor.setFirstName(actorResult.getString("first_name"));
+				actor.setLastName(actorResult.getString("last_name"));
 
 			}
 			actorResult.close();
@@ -80,42 +86,31 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
 
-		List<Actor> films = new ArrayList<>();
+		List<Actor> actors = new ArrayList<>();
 		try {
-	  Connection conn = DriverManager.getConnection(URL, USER, PASS);
-    String sql = "SELECT actor.id, actor.first_name, actor.last_name ";
-                sql += " rental_rate, length, replacement_cost, rating, special_features "
-               +  " FROM film JOIN film_actor ON film.id = film_actor.film_id "
-               + " WHERE film_id = ?";
-    PreparedStatement stmt = conn.prepareStatement(sql);
-    stmt.setInt(1, filmId);
-    ResultSet rs = stmt.executeQuery();
-    while (rs.next()) {
-      int id = rs.getInt("id");
-      String title = rs.getString("title");
-      String desc = rs.getString("description");
-      String releaseYear = rs.getString("release_year");
-      int langId = rs.getInt("language_id");
-      int rentDur = rs.getInt("rental_duration");
-      double rate = rs.getDouble("rental_rate");
-      int length = rs.getInt("length");
-      double repCost = rs.getDouble("replacement_cost");
-      String rating = rs.getString("rating");
-      String features = rs.getString("special_features");
-      Film film = new Film(id, title, desc, releaseYear, langId,
-                           rentDur, rate, length, repCost, rating, features);
-      films.add(film);
-    }
-    rs.close();
-    stmt.close();
-    conn.close();
-  } catch (SQLException e) {
-    e.printStackTrace();
-  }
-  return films;
+			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			String sql = "SELECT actor.first_name, actor.last_name ";
+			sql += " FROM actor JOIN film_actor ON actor.id = film_actor.actor_id "
+					+ "JOIN film ON film_actor.film_id = film.id " + " WHERE film.id = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, filmId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String firstName = rs.getString("actor.first_name");
+				String lastName = rs.getString("actor.last_name");
 
+				Actor actor = new Actor(firstName, lastName);
+				actors.add(actor);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+			return actors;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	return null;
-}
+		return null;
+	}
 
 }

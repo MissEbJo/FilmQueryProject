@@ -156,16 +156,25 @@ public class Film {
 				&& Objects.equals(specialFeatures, other.specialFeatures) && Objects.equals(title, other.title);
 	}
 
+	
+	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Film id: ").append(id).append(", title: ").append(title).append(", description: ")
-				.append(description).append(", releaseYear=").append(releaseYear).append(", languageId=")
-				.append(languageId).append(", rentalDuration=").append(rentalDuration).append(", rentalRate=")
-				.append(rentalRate).append(", length=").append(length).append(", replacementCost=")
-				.append(replacementCost).append(", rating=").append(rating).append(", specialFeatures=")
-				.append(specialFeatures).append("]");
-		return builder.toString();
+		return "Film id=" + id + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear
+				+ ", languageId=" + languageId + ", rentalDuration=" + rentalDuration + ", rentalRate=" + rentalRate
+				+ ", length=" + length + ", replacementCost=" + replacementCost + ", rating=" + rating
+				+ ", specialFeatures=" + specialFeatures + ", actors=\n" + formatActors();
+	}
+
+	private String formatActors() {
+		String result = "";
+		for (Actor actor : actors) {
+			result+= actor +"\n";
+		}
+		
+		
+		return result;
+		
 	}
 
 }
