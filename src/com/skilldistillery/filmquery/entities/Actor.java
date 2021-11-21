@@ -7,7 +7,7 @@ public class Actor {
 	private int id;
 	private String firstName;
 	private String lastName;
-//	private List<Film> film;
+	private List<Film> film;
 
 	public Actor() {
 
@@ -47,13 +47,13 @@ public class Actor {
 
 	}
 
-//	public List<Film> getFilm() {
-//		return film;
-//	}
-//
-//	public void setFilm(List<Film> film) {
-//		this.film = film;
-//	}
+	public List<Film> getFilm() {
+		return film;
+	}
+
+	public void setFilm(List<Film> film) {
+		this.film = film;
+	}
 
 	@Override
 	public int hashCode() {

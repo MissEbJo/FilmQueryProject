@@ -44,10 +44,25 @@ public class FilmQueryApp {
 	  choice =input.nextInt();
 	  switch (choice) {
 	case 1:
-		Film film = db.findFilmById(input.nextInt());
+		
+		System.out.println("Enter the film number: ");
+		int number = input.nextInt();
+		Film film = db.findFilmById(number);
+		if(film == null) {
+			System.out.println("There is not title matching your request! Please try with a different film number!");
+		}else {
 	    System.out.println(film);
+		}
 		break;
 	case 2:
+		System.out.println("Enter a word to search for your film: ");
+		String theWordToSearchFor = input.next();
+		List<Film> film2 = db.findFilmsByKeyword(theWordToSearchFor);
+		if(film2 == null) {
+			System.out.println("There is not title matching your request! Please try with a different film number!");
+		}else {
+	    System.out.println(film2);
+		}
 		
 		break;
 	case 3:

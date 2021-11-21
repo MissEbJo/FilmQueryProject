@@ -32,17 +32,17 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		try {
 			Connection conn = DriverManager.getConnection(URL, USER, PASS);
-			String sql = "SELECT DISTINCT film.id, film.title"
-					+ " FROM film JOIN film_actor ON film.id = film_actor.film_id WHERE film_id = ?;";
+			String sql = "SELECT * FROM film WHERE id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-//			System.out.println(stmt);
 			stmt.setInt(1, filmId);
 			ResultSet filmResult = stmt.executeQuery();
+
 			if (filmResult.next()) {
 				film = new Film();
-				film.setId(filmResult.getInt("film.id"));
 				film.setTitle(filmResult.getString("film.title"));
-				film.setActors(findActorsByFilmId(filmId));
+				film.setReleaseYear(filmResult.getString("release_year"));
+				film.setDescription(filmResult.getString("description"));
+				film.setRating(filmResult.getString("rating"));
 
 			}
 			filmResult.close();
@@ -50,6 +50,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			conn.close();
 
 		} catch (SQLException e) {
+			System.out.println("Invalid input. Please try again.");
 			e.printStackTrace();
 		}
 		return film;
@@ -60,7 +61,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Actor actor = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, USER, PASS);
-			String sql = "SELECT id, first_name, last_name FROM actor WHERE id = ?;";
+			String sql = "SELECT id, first_name, last_name FROM actor WHERE id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, actorId);
 			ResultSet actorResult = stmt.executeQuery();
@@ -105,12 +106,43 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			rs.close();
 			stmt.close();
 			conn.close();
-			return actors;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return actors;
+	}
+	public List<Film> findFilmsByKeyword(String theWordToSearchFor) {
+		List<Film> films = new ArrayList<>();
 
-		return null;
+		try {
+			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			String sql = "SELECT * FROM film WHERE title LIKE ? OR description LIKE ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%" + theWordToSearchFor + "%");
+			stmt.setString(2, "%" + theWordToSearchFor + "%");
+			ResultSet filmResult = stmt.executeQuery();
+
+			while (filmResult.next()) {
+				Film film = new Film();
+				
+				film.setTitle(filmResult.getString("film.title"));
+				film.setReleaseYear(filmResult.getString("release_year"));
+				film.setDescription(filmResult.getString("description"));
+				film.setRating(filmResult.getString("rating"));
+				films.add(film);
+
+			}
+
+			filmResult.close();
+			stmt.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			System.out.println("Invalid input. Please try again.");
+			e.printStackTrace();
+		}
+		return films;
+
 	}
 
 }
