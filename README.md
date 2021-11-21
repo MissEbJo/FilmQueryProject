@@ -21,7 +21,7 @@ We want to make it as easy as possible to help you the movie you're looking for!
 * GitHub, Eclipse, SQL, Maven, JDBC, MAMP
 
 ##Lessons Learned
-The hardest part of creating a program from a few sentences is that I tend to over-complicate the simple. 
+**The hardest part of creating a program from a few sentences is that I tend to over-complicate the simple. 
 I tried to incorporate a few "if" conditions to display the language of the film and after a few trials and errors, I asked for help. 
 Only to realize that I was going to far to get a simple word that was already in the database and I only had to pull that word using the same sequence of events that I used to pull the rest of the data from the database.
 
