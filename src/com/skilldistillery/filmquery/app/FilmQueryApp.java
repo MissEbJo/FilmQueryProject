@@ -29,6 +29,7 @@ public class FilmQueryApp {
 
   private void launch() {
     Scanner input = new Scanner(System.in);
+    menuBanner();
     
     startUserInterface(input);
     
@@ -58,7 +59,7 @@ public class FilmQueryApp {
 		System.out.println("Enter a word to search for your film: ");
 		String theWordToSearchFor = input.next();
 		List<Film> film2 = db.findFilmsByKeyword(theWordToSearchFor);
-		if(film2 == null) {
+		if(film2.isEmpty()) {
 			System.out.println("There is not title matching your request! Please try with a different film number!");
 		}else {
 	    System.out.println(film2);
@@ -77,8 +78,24 @@ public class FilmQueryApp {
 	 
 	  }
   }
+  private void menuBanner() {
+	  System.out.println("\n"
+	  		+ " ________ .-./`)   .---.     ,---.    ,---.        .-./`) ,---------.  \n"
+	  		+ "|        |\\ .-.')  | ,_|     |    \\  /    |        \\ .-.')\\          \\ \n"
+	  		+ "|   .----'/ `-' \\,-./  )     |  ,  \\/  ,  |        / `-' \\ `--.  ,---' \n"
+	  		+ "|  _|____  `-'`\"`\\  '_ '`)   |  |\\_   /|  |         `-'`\"`    |   \\    \n"
+	  		+ "|_( )_   | .---.  > (_)  )   |  _( )_/ |  |         .---.     :_ _:    \n"
+	  		+ "(_ o._)__| |   | (  .  .-'   | (_ o _) |  |         |   |     (_I_)    \n"
+	  		+ "|(_,_)     |   |  `-'`-'|___ |  (_,_)  |  |         |   |    (_(=)_)   \n"
+	  		+ "|   |      |   |   |        \\|  |      |  |         |   |     (_I_)    \n"
+	  		+ "'---'      '---'   `--------`'--'      '--'         '---'     '---'    \n"
+	  		+ "                                                                       \n"
+	  		+ "");
+  }
   
   private void printMenu(){
+	  
+	  System.out.println();
 	  System.out.println("************************************");
 	  System.out.println("         Welcome to FilmIt          ");
 	  System.out.println("************************************");

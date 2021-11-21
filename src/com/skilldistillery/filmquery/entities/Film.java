@@ -10,7 +10,7 @@ public class Film {
 	private String title;
 	private String description;
 	private String releaseYear;
-	private int languageId;
+	private String languageId;
 	private int rentalDuration;
 	private double rentalRate;
 	private int length;
@@ -23,7 +23,7 @@ public class Film {
 
 	}
 
-	public Film(int id, String title, String description, String releaseYear, int languageId, int rentalDuration,
+	public Film(int id, String title, String description, String releaseYear, String languageId, int rentalDuration,
 			double rentalRate, int length, double replacementCost, String rating, String specialFeatures) {
 		super();
 		this.id = id;
@@ -71,11 +71,11 @@ public class Film {
 		this.releaseYear = releaseYear;
 	}
 
-	public int getLanguageId() {
+	public String getLanguageId() {
 		return languageId;
 	}
 
-	public void setLanguageId(int languageId) {
+	public void setLanguageId(String languageId) {
 		this.languageId = languageId;
 	}
 
@@ -160,7 +160,7 @@ public class Film {
 	
 	@Override
 	public String toString() {
-		return "Title: " + title + "\nYear: " + releaseYear + "\nDescription: " + description + "\nRating: " + rating; 
+		return "\nTitle: " + title + "\nYear: " + releaseYear + "\nDescription: " + description + "\nRating: " + rating + "\nLanguage: " + languageId +"\nActor(s):\n"+ formatActors()+"\n"  ; 
 	}
 
 	private String formatActors() {
